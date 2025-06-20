@@ -222,9 +222,9 @@ After reviewing the BloodHound data, we see that the `m.harris` user belongs to 
 
 ![image.png](image%2013.png)
 
-We follow the provided guide to set up Kerberos authentication for `evil-winrm`:
+We can follow the provided guide to set up Kerberos authentication for `evil-winrm`:
 
-[Setting Up evil-winrm for Kerberos Authentication](https://www.notion.so/Setting-Up-evil-winrm-for-Kerberos-Authentication-1d994cb6b0cf812bb64fe07be9429401?pvs=21) 
+[Setting Up evil-winrm for Kerberos Authentication](https://notes.benheater.com/books/active-directory/page/kerberos-authentication-from-kali)
 
 We use `getTGT.py` to obtain a TGT for the `m.harris` user:
 
@@ -256,6 +256,11 @@ After enumerating the target host, we see that the `Output Messenger` applicatio
 ### Forwarding Internal Ports
 
 We use `ligolo-ng` to forward all internal ports to the `240.0.0.1` IP address on our Kali:
+
+```bash
+sudo ip tuntap add user $(whoami) mode tun internal; sudo ip link set internal up
+sudo ip route add 240.0.0.1/24 dev internal
+```
 
 ![image.png](image%2017.png)
 
