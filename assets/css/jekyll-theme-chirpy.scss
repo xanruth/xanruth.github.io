@@ -43,3 +43,16 @@
 .icon-hackthebox:before {
   content: "\e901";
 }
+
+/* Make all images left-aligned by default */  
+.content img,  
+.content .img-link {  
+  display: block;  
+  margin-left: 0;  
+  margin-right: auto;  
+}  
+  
+/* Override the default centered positioning for image wrappers */  
+.content .img-link.popup {  
+  text-align: left;  
+}
