@@ -548,7 +548,7 @@ Certificate Templates
 
 ### ESC4 Attack
 
-https://github.com/ly4k/Certipy/wiki/06-%E2%80%90-Privilege-Escalation#esc4-template-hijacking
+[ESC4: Template Hijacking](https://github.com/ly4k/Certipy/wiki/06-%E2%80%90-Privilege-Escalation#esc4-template-hijacking)
 
 1. **Modifying the Template to a Vulnerable State**:
     
