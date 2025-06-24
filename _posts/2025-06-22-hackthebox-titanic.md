@@ -127,7 +127,7 @@ If we try to access any valid directory on the target host instead of a file, we
 
 ![image.png](image%2010.png)
 
-This happens because the `os.path.exists()` returns True when given a directory, but the Flash `send_file()` function can't handle directories, so we get a `500` error.
+This happens because the `os.path.exists()` returns True when given a directory, but the Flask's `send_file()` function can't handle directories, so we get a `500` error.
 
 ### Gitea Structure
 
@@ -263,7 +263,7 @@ drwxr-xr-x 5 root root 4096 Feb  7 10:37 ..
 developer@titanic:/opt/scripts$
 ```
 
-Viewing the contents of the identify_images.sh script, we see that performs does several actions:
+Viewing the contents of the `identify_images.sh` script, we see that it performs several actions:
 
 ```bash
 cd /opt/app/static/assets/images
@@ -273,7 +273,7 @@ find /opt/app/static/assets/images/ -type f -name "*.jpg" | xargs /usr/bin/magic
 
 This script first changes the directory to the `/opt/app/static/assets/images` directory. It then clears the `metadata.log` file, searches for all `.jpg` files in the directory, uses the **ImageMagick** (`/usr/bin/magick`) program with the `identify` command to obtain their metadata and writes the output to `metadata.log`.
 
-Monitoring the `metadata.log` file with `tail`, we can observe the file being truncated and overwritten with new metadata, meaning this script is being run as a **root** cronjob:
+Monitoring the `metadata.log` file with `tail`, we can observe the file being truncated and overwritten with new metadata in real time, meaning this script is being run as a **root** cronjob:
 
 ```bash
 tail -F metadata.log | awk '{ print strftime("%T"), $0; fflush() }'
@@ -303,7 +303,8 @@ developer@titanic:/opt/scripts$
 ```
 
 After conducting some research, we discover that this version of **ImageMagick** is vulnerable to **Arbitrary Code Execution**:
-> The AppImage version ImageMagick might use an empty path when setting MAGICK_CONFIGURE_PATH and LD_LIBRARY_PATH environment variables while executing, which might lead to arbitrary code execution by loading malicious configuration files or shared libraries in the current working directory while executing ImageMagick.
+> The AppImage version ImageMagick might use an empty path when setting `MAGICK_CONFIGURE_PATH` and `LD_LIBRARY_PATH` environment variables while executing, which might lead to arbitrary code execution by loading malicious configuration files or shared libraries in the current working directory while executing ImageMagick.
+{: .prompt-info }
 
 [Arbitrary Code Execution in `AppImage` version `ImageMagick`
 ](https://github.com/ImageMagick/ImageMagick/security/advisories/GHSA-8rxc-922v-phg8)
